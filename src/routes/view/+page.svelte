@@ -1,25 +1,29 @@
 <script lang="ts">
-	import { marked } from 'marked';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { parseMarkdown, decodeMarkdownFromHash } from '$lib/markdown';
+	import MarkdownRenderer from '$lib/MarkdownRenderer.svelte';
 
 	let markdownContent = '';
 	let decodedContent = '';
 	let error = '';
+	let parsedTokens: any[] = [];
 
 	onMount(() => {
 		// Get the hash from the URL
 		const hash = window.location.hash.substring(1);
-		
+
 		if (!hash) {
 			error = 'No markdown content found in the URL.';
 			return;
 		}
 
 		try {
-			// Decode the base64 content
-			decodedContent = decodeURIComponent(escape(atob(hash)));
+			// Decode the base64 content using the utility function
+			decodedContent = decodeMarkdownFromHash(hash);
 			markdownContent = decodedContent;
+			// Parse markdown to tokens
+			parsedTokens = parseMarkdown(markdownContent);
 		} catch (e) {
 			error = 'Failed to decode the markdown content. The link may be invalid.';
 			console.error('Decoding error:', e);
@@ -64,9 +68,11 @@
 					<button on:click={createNew} class="btn btn-primary">Create New</button>
 				</div>
 			</div>
-			
-			<div class="markdown-content">{@html marked(markdownContent)}</div>
-			
+
+			<div class="markdown-content">
+				<MarkdownRenderer tokens={parsedTokens} />
+			</div>
+
 			<div class="raw-section">
 				<details>
 					<summary>View Raw Markdown</summary>
@@ -230,7 +236,8 @@
 		margin: 1rem 0;
 	}
 
-	.markdown-content :global(ul), .markdown-content :global(ol) {
+	.markdown-content :global(ul),
+	.markdown-content :global(ol) {
 		margin: 1rem 0;
 		padding-left: 2rem;
 	}
@@ -297,7 +304,8 @@
 		margin: 1.5rem 0;
 	}
 
-	.markdown-content :global(th), .markdown-content :global(td) {
+	.markdown-content :global(th),
+	.markdown-content :global(td) {
 		border: 1px solid #ddd;
 		padding: 0.75rem;
 		text-align: left;
@@ -355,8 +363,12 @@
 	}
 
 	@keyframes spin {
-		0% { transform: rotate(0deg); }
-		100% { transform: rotate(360deg); }
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 
 	.loading-section p {

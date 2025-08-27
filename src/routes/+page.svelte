@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { marked } from 'marked';
 	import { onMount } from 'svelte';
+	import { parseMarkdown } from '$lib/markdown';
+	import MarkdownRenderer from '$lib/MarkdownRenderer.svelte';
 
 	let markdownInput = '';
 	let shareableLink = '';
 	let characterCount = 0;
 	let showCopyNotification = false;
+	let parsedTokens: any[] = [];
 	const maxCharacters = 400;
 
 	function generateLink() {
@@ -39,6 +41,7 @@
 	}
 
 	$: characterCount = markdownInput.length;
+	$: parsedTokens = markdownInput.trim() ? parseMarkdown(markdownInput) : [];
 </script>
 
 <svelte:head>
@@ -99,7 +102,9 @@
 	{#if markdownInput.trim()}
 		<div class="preview-section">
 			<h3>Preview:</h3>
-			<div class="preview-content">{@html marked(markdownInput)}</div>
+			<div class="preview-content">
+				<MarkdownRenderer tokens={parsedTokens} />
+			</div>
 		</div>
 	{/if}
 </main>
