@@ -45,7 +45,10 @@
 
 <main class="container">
 	<div class="header">
-		<h1>Reflect</h1>
+		<div class="logo-container">
+			<img src="/logo.png" alt="Reflect Logo" class="logo" />
+			<h1>Reflect</h1>
+		</div>
 		<p>Shared markdown content</p>
 	</div>
 
@@ -99,6 +102,20 @@
 	.header {
 		text-align: center;
 		margin-bottom: 3rem;
+	}
+
+	.logo-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.logo {
+		width: 48px;
+		height: 48px;
+		object-fit: contain;
 	}
 
 	.header h1 {
