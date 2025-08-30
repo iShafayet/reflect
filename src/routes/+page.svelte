@@ -2,11 +2,13 @@
 	import { onMount } from 'svelte';
 	import { parseMarkdown } from '$lib/markdown';
 	import MarkdownRenderer from '$lib/MarkdownRenderer.svelte';
+	import LearnMorePopup from '$lib/LearnMorePopup.svelte';
 
 	let markdownInput = '';
 	let shareableLink = '';
 	let characterCount = 0;
 	let showCopyNotification = false;
+	let showLearnMorePopup = false;
 	let parsedTokens: any[] = [];
 	const maxCharacters = 400;
 
@@ -55,6 +57,9 @@
 			<h1>Reflect</h1>
 		</div>
 		<p>Share your thoughts in markdown format</p>
+		<button class="learn-more-btn" on:click={() => showLearnMorePopup = true}>
+			Learn More
+		</button>
 	</div>
 
 	<div class="input-section">
@@ -100,6 +105,10 @@
 		<div class="copy-notification">
 			✅ Link copied to clipboard!
 		</div>
+	{/if}
+
+	{#if showLearnMorePopup}
+		<LearnMorePopup on:close={() => showLearnMorePopup = false} />
 	{/if}
 
 	{#if markdownInput.trim()}
@@ -150,6 +159,24 @@
 		font-size: 1.2rem;
 		color: #7f8c8d;
 		margin: 0.5rem 0 0 0;
+	}
+
+	.learn-more-btn {
+		margin-top: 1rem;
+		padding: 0.5rem 1.5rem;
+		background: transparent;
+		color: #3498db;
+		border: 2px solid #3498db;
+		border-radius: 6px;
+		font-size: 0.9rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.learn-more-btn:hover {
+		background: #3498db;
+		color: white;
 	}
 
 	.input-section {
