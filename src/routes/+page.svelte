@@ -422,4 +422,198 @@
 			opacity: 1;
 		}
 	}
+
+	/* Landscape mobile optimizations */
+	@media (max-width: 768px) and (orientation: landscape) {
+		.container {
+			padding: 1rem;
+		}
+
+		.header {
+			margin-bottom: 2rem;
+		}
+
+		.header h1 {
+			font-size: 2.5rem;
+		}
+
+		.input-section {
+			margin-bottom: 1.5rem;
+		}
+
+		.link-section {
+			margin-bottom: 1.5rem;
+		}
+
+		.preview-section {
+			margin-bottom: 1.5rem;
+		}
+	}
+
+	/* Tablet optimizations */
+	@media (max-width: 768px) and (min-width: 481px) {
+		.container {
+			padding: 1.5rem;
+		}
+
+		.header h1 {
+			font-size: 2.75rem;
+		}
+
+		.link-container {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.copy-btn {
+			width: 100%;
+		}
+	}
+
+	/* Mobile-first responsive design */
+	@media (max-width: 480px) {
+		.container {
+			padding: 1rem;
+			margin: 0;
+			max-width: 100%;
+		}
+
+		.header h1 {
+			font-size: 2.5rem;
+		}
+
+		.header p {
+			font-size: 1rem;
+		}
+
+		.logo {
+			width: 40px;
+			height: 40px;
+		}
+
+		.input-header {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.5rem;
+		}
+
+		.character-count {
+			font-size: 0.8rem;
+		}
+
+		textarea {
+			padding: 0.75rem;
+			font-size: 0.85rem;
+			min-height: 120px;
+		}
+
+		.generate-btn {
+			width: 100%;
+			padding: 1rem;
+			font-size: 1.1rem;
+		}
+
+		.link-section {
+			padding: 1rem;
+		}
+
+		.link-container {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.link-input {
+			font-size: 0.8rem;
+			padding: 0.75rem;
+		}
+
+		.copy-btn {
+			width: 100%;
+			padding: 0.75rem;
+		}
+
+		.preview-section {
+			padding: 1rem;
+		}
+
+		.preview-content :global(h1) {
+			font-size: 1.75rem;
+		}
+
+		.preview-content :global(h2) {
+			font-size: 1.5rem;
+		}
+
+		.preview-content :global(h3) {
+			font-size: 1.25rem;
+		}
+
+		.copy-notification {
+			top: 10px;
+			right: 10px;
+			left: 10px;
+			text-align: center;
+			padding: 0.75rem;
+			font-size: 0.9rem;
+		}
+	}
+
+	/* Ultra-small phone optimizations */
+	@media (max-width: 360px) {
+		.container {
+			padding: 0.5rem;
+		}
+
+		.header h1 {
+			font-size: 2rem;
+		}
+
+		.header p {
+			font-size: 0.9rem;
+		}
+
+		.logo {
+			width: 32px;
+			height: 32px;
+		}
+
+		.input-header {
+			gap: 0.25rem;
+		}
+
+		.character-count {
+			font-size: 0.75rem;
+		}
+
+		textarea {
+			padding: 0.5rem;
+			font-size: 0.8rem;
+			min-height: 100px;
+		}
+
+		.generate-btn {
+			padding: 0.75rem;
+			font-size: 1rem;
+		}
+
+		.link-section {
+			padding: 0.75rem;
+		}
+
+		.preview-section {
+			padding: 0.75rem;
+		}
+
+		.preview-content :global(h1) {
+			font-size: 1.5rem;
+		}
+
+		.preview-content :global(h2) {
+			font-size: 1.25rem;
+		}
+
+		.preview-content :global(h3) {
+			font-size: 1.1rem;
+		}
+	}
 </style>

@@ -270,4 +270,91 @@
 			padding-right: 1.5rem;
 		}
 	}
+
+	/* Mobile-first responsive design for small phones */
+	@media (max-width: 480px) {
+		.popup-backdrop {
+			padding: 0.5rem;
+		}
+
+		.popup-content {
+			margin: 0;
+			max-width: 100%;
+			max-height: calc(100vh - 1rem);
+			border-radius: 8px;
+		}
+
+		.popup-header {
+			padding: 1rem 1.25rem 0.75rem 1.25rem;
+		}
+
+		.popup-header h2 {
+			font-size: 1.25rem;
+		}
+
+		.close-btn {
+			width: 28px;
+			height: 28px;
+			font-size: 1.5rem;
+		}
+
+		.popup-body {
+			padding: 1rem 1.25rem;
+		}
+
+		.section {
+			margin-bottom: 1.5rem;
+		}
+
+		.section h3 {
+			font-size: 1rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.section p {
+			font-size: 0.85rem;
+			margin-bottom: 0.5rem;
+			line-height: 1.5;
+		}
+
+		.section ul, .section ol {
+			padding-left: 1.25rem;
+			margin: 0.5rem 0;
+		}
+
+		.section li {
+			font-size: 0.8rem;
+			margin: 0.25rem 0;
+			line-height: 1.4;
+		}
+
+		.popup-footer {
+			padding: 0.75rem 1.25rem 1.25rem 1.25rem;
+		}
+
+		.got-it-btn {
+			width: 100%;
+			padding: 1rem;
+			font-size: 1rem;
+		}
+	}
+
+	@media (max-width: 768px) and (min-width: 481px) {
+		.popup-content {
+			margin: 1.5rem;
+			max-width: 90%;
+		}
+
+		.popup-header h2 {
+			font-size: 1.4rem;
+		}
+
+		.section h3 {
+			font-size: 1.05rem;
+		}
+
+		.section p {
+			font-size: 0.9rem;
+		}
+	}
 </style>

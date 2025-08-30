@@ -230,4 +230,104 @@
 		border-top: 2px solid #ecf0f1;
 		margin: 2rem 0;
 	}
+
+	/* Mobile-first responsive design for small phones */
+	@media (max-width: 480px) {
+		.markdown-content {
+			font-size: 0.9rem;
+			line-height: 1.5;
+		}
+
+		.markdown-content :global(h1) {
+			font-size: 1.75rem;
+			margin: 1.25rem 0 1rem 0;
+			padding-bottom: 0.25rem;
+		}
+
+		.markdown-content :global(h2) {
+			font-size: 1.5rem;
+			margin: 1.25rem 0 0.75rem 0;
+		}
+
+		.markdown-content :global(h3) {
+			font-size: 1.25rem;
+			margin: 1rem 0 0.5rem 0;
+		}
+
+		.markdown-content :global(h4) {
+			font-size: 1.1rem;
+			margin: 0.75rem 0 0.5rem 0;
+		}
+
+		.markdown-content :global(h5) {
+			font-size: 1rem;
+			margin: 0.75rem 0 0.5rem 0;
+		}
+
+		.markdown-content :global(h6) {
+			font-size: 0.95rem;
+			margin: 0.75rem 0 0.5rem 0;
+		}
+
+		.markdown-content :global(p) {
+			margin: 0.75rem 0;
+			line-height: 1.5;
+		}
+
+		.markdown-content :global(ul),
+		.markdown-content :global(ol) {
+			margin: 0.75rem 0;
+			padding-left: 1.5rem;
+		}
+
+		.markdown-content :global(li) {
+			margin: 0.25rem 0;
+			line-height: 1.4;
+		}
+
+		.markdown-content :global(blockquote) {
+			margin: 1rem 0;
+			padding: 0.75rem 1rem;
+			border-left-width: 3px;
+		}
+
+		.markdown-content :global(blockquote p) {
+			margin: 0.25rem 0;
+			font-size: 0.85rem;
+		}
+
+		.markdown-content :global(code) {
+			padding: 0.15rem 0.3rem;
+			font-size: 0.8rem;
+		}
+
+		.markdown-content :global(pre) {
+			padding: 0.75rem;
+			margin: 0.75rem 0;
+			font-size: 0.75rem;
+			line-height: 1.3;
+		}
+
+		.markdown-content :global(hr) {
+			margin: 1.5rem 0;
+		}
+	}
+
+	@media (max-width: 768px) and (min-width: 481px) {
+		.markdown-content :global(h1) {
+			font-size: 2rem;
+		}
+
+		.markdown-content :global(h2) {
+			font-size: 1.75rem;
+		}
+
+		.markdown-content :global(h3) {
+			font-size: 1.4rem;
+		}
+
+		.markdown-content :global(pre) {
+			font-size: 0.8rem;
+		}
+	}
 </style>

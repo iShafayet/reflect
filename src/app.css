@@ -20,3 +20,128 @@ body {
 #svelte {
 	min-height: 100vh;
 }
+
+/* Mobile-first optimizations */
+@media (max-width: 480px) {
+	html {
+		font-size: 14px;
+	}
+
+	body {
+		font-size: 0.9rem;
+		line-height: 1.5;
+	}
+
+	/* Touch-friendly improvements */
+	button, input, textarea, select {
+		font-size: 16px; /* Prevents zoom on iOS */
+	}
+
+	/* Better mobile scrolling */
+	* {
+		-webkit-overflow-scrolling: touch;
+	}
+
+	/* Optimize for mobile performance */
+	* {
+		-webkit-tap-highlight-color: transparent;
+	}
+}
+
+/* Tablet optimizations */
+@media (max-width: 768px) and (min-width: 481px) {
+	html {
+		font-size: 15px;
+	}
+
+	body {
+		font-size: 0.95rem;
+	}
+}
+
+/* Enhanced mobile touch feedback */
+@media (max-width: 768px) {
+	/* Touch-friendly button states */
+	button:active {
+		transform: scale(0.98);
+		transition: transform 0.1s ease;
+	}
+
+	/* Improved touch targets */
+	button {
+		min-height: 44px;
+		min-width: 44px;
+	}
+
+	/* Better mobile form elements */
+	/* input, textarea {
+		-webkit-appearance: none;
+		border-radius: 8px;
+	} */
+
+	/* Mobile-optimized focus states */
+	button:focus, input:focus, textarea:focus {
+		outline: 2px solid #3498db;
+		outline-offset: 2px;
+	}
+
+	/* Improved mobile scrolling */
+	.popup-content, .markdown-content, .raw-content {
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: thin;
+	}
+
+	/* Mobile-optimized animations */
+	@media (prefers-reduced-motion: no-preference) {
+		.popup-backdrop {
+			animation-duration: 0.2s;
+		}
+		
+		.popup-content {
+			animation-duration: 0.25s;
+		}
+	}
+}
+
+/* Ultra-small phone optimizations */
+@media (max-width: 360px) {
+	html {
+		font-size: 13px;
+	}
+
+	body {
+		font-size: 0.85rem;
+	}
+
+	.container {
+		padding: 0.5rem;
+	}
+
+	.header h1 {
+		font-size: 2rem;
+	}
+
+	.logo {
+		width: 32px;
+		height: 32px;
+	}
+}
+
+/* Landscape mobile optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+	.container {
+		padding: 1rem;
+	}
+
+	.header {
+		margin-bottom: 2rem;
+	}
+
+	.header h1 {
+		font-size: 2.5rem;
+	}
+
+	.input-section {
+		margin-bottom: 1.5rem;
+	}
+}

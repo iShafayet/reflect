@@ -437,4 +437,154 @@
 			align-items: center;
 		}
 	}
+
+	/* Mobile-first responsive design for small phones */
+	@media (max-width: 480px) {
+		.container {
+			padding: 0.75rem;
+			margin: 0;
+			max-width: 100%;
+		}
+
+		.header {
+			margin-bottom: 2rem;
+		}
+
+		.header h1 {
+			font-size: 2.5rem;
+		}
+
+		.header p {
+			font-size: 1rem;
+		}
+
+		.logo {
+			width: 40px;
+			height: 40px;
+		}
+
+		.content-header {
+			padding: 1rem;
+			flex-direction: column;
+			gap: 1rem;
+			align-items: stretch;
+		}
+
+		.content-header h2 {
+			font-size: 1.5rem;
+			text-align: center;
+		}
+
+		.actions {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.btn {
+			width: 100%;
+			padding: 1rem;
+			font-size: 1rem;
+		}
+
+		.markdown-content {
+			padding: 1rem;
+		}
+
+		.markdown-content :global(h1) {
+			font-size: 2rem;
+			margin: 1.5rem 0 1rem 0;
+		}
+
+		.markdown-content :global(h2) {
+			font-size: 1.75rem;
+			margin: 1.25rem 0 0.75rem 0;
+		}
+
+		.markdown-content :global(h3) {
+			font-size: 1.5rem;
+			margin: 1rem 0 0.5rem 0;
+		}
+
+		.markdown-content :global(h4) {
+			font-size: 1.25rem;
+			margin: 1rem 0 0.5rem 0;
+		}
+
+		.markdown-content :global(ul),
+		.markdown-content :global(ol) {
+			padding-left: 1.5rem;
+		}
+
+		.markdown-content :global(blockquote) {
+			padding: 0.75rem 1rem;
+			margin: 1rem 0;
+		}
+
+		.markdown-content :global(pre) {
+			padding: 1rem;
+			margin: 1rem 0;
+			font-size: 0.8rem;
+		}
+
+		.raw-section {
+			padding: 1rem;
+		}
+
+		.raw-content {
+			padding: 0.75rem;
+			font-size: 0.75rem;
+			line-height: 1.3;
+		}
+
+		.error-section {
+			padding: 2rem 1rem;
+		}
+
+		.error-icon {
+			font-size: 3rem;
+		}
+
+		.error-section h2 {
+			font-size: 1.5rem;
+		}
+
+		.error-section p {
+			font-size: 1rem;
+		}
+
+		.error-actions {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.loading-section {
+			padding: 2rem 1rem;
+		}
+
+		.loading-spinner {
+			width: 32px;
+			height: 32px;
+		}
+	}
+
+	@media (max-width: 768px) and (min-width: 481px) {
+		.container {
+			padding: 1.5rem;
+		}
+
+		.content-header {
+			flex-direction: column;
+			gap: 1rem;
+			align-items: stretch;
+		}
+
+		.actions {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.btn {
+			width: 100%;
+		}
+	}
 </style>
