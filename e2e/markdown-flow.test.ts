@@ -149,6 +149,12 @@ test.describe('Markdown Sharing Flow', () => {
 		
 		// Check raw markdown section
 		await expect(page.locator('.raw-section summary')).toHaveText('View Raw Markdown');
+		
+		// Close TOC popup if it's open
+		const tocPopup = page.locator('.popup-backdrop');
+		if (await tocPopup.isVisible()) {
+			await page.locator('.got-it-btn').click();
+		}
 		await page.locator('.raw-section summary').click();
 		await expect(page.locator('.raw-content')).toContainText('# Shared Content');
 	});
@@ -162,7 +168,7 @@ test.describe('Markdown Sharing Flow', () => {
 		await expect(page.locator('.error-section p')).toContainText('Failed to decode the markdown content');
 		
 		// Should show action buttons
-		await expect(page.locator('.error-actions .btn-secondary')).toHaveText('Go Back');
+		await expect(page.locator('.error-actions .btn-secondary')).toHaveText('TOC');
 		await expect(page.locator('.error-actions .btn-primary')).toHaveText('Create New');
 	});
 
@@ -188,12 +194,13 @@ test.describe('Markdown Sharing Flow', () => {
 		const hash = linkValue.split('#')[1];
 		await page.goto(`/view#${hash}`);
 		
-		// Use back button
-		await page.locator('button:has-text("Back")').click();
-		await expect(page).toHaveURL('/');
+		// Note: Back button has been replaced with TOC button
 		
-		// Go back to view page
-		await page.goto(`/view#${hash}`);
+		// Close TOC popup if it's open
+		const tocPopup = page.locator('.popup-backdrop');
+		if (await tocPopup.isVisible()) {
+			await page.locator('.got-it-btn').click();
+		}
 		
 		// Use create new button
 		await page.locator('button:has-text("Create New")').click();
@@ -225,6 +232,12 @@ test.describe('Markdown Sharing Flow', () => {
 		await expect(page.locator('.markdown-content p')).toContainText('This is **safe** content');
 		
 		// Raw content should show the original text
+		// Close TOC popup if it's open
+		const tocPopup2 = page.locator('.popup-backdrop');
+		if (await tocPopup2.isVisible()) {
+			await page.locator('.got-it-btn').click();
+		}
+		
 		await page.locator('.raw-section summary').click();
 		await expect(page.locator('.raw-content')).toContainText('<script>alert(\'xss\')</script>');
 	});

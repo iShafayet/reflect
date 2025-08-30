@@ -3,13 +3,17 @@
 	import { page } from '$app/stores';
 	import { parseMarkdown, decodeMarkdownFromHash } from '$lib/markdown';
 	import MarkdownRenderer from '$lib/MarkdownRenderer.svelte';
+	import TermsAndConditionsPopup from '$lib/TermsAndConditionsPopup.svelte';
+	import { localStorageKey } from '$lib/crypto-utils';
 
 	let markdownContent = '';
 	let decodedContent = '';
 	let error = '';
 	let parsedTokens: any[] = [];
+	let showTOCPopup = false;
+	let currentLinkHash = '';
 
-	onMount(() => {
+	onMount(async () => {
 		// Get the hash from the URL
 		const hash = window.location.hash.substring(1);
 
@@ -24,19 +28,26 @@
 			markdownContent = decodedContent;
 			// Parse markdown to tokens
 			parsedTokens = parseMarkdown(markdownContent);
+			
+			// Generate link hash for localStorage tracking
+			currentLinkHash = await localStorageKey(hash);
+			
+			// Check if TOC should be shown for this link
+			const tocHidden = localStorage.getItem(`toc_hidden_${currentLinkHash}`);
+			if (!tocHidden) {
+				showTOCPopup = true;
+			}
 		} catch (e) {
 			error = 'Failed to decode the markdown content. The link may be invalid.';
 			console.error('Decoding error:', e);
 		}
 	});
 
-	function goBack() {
-		window.history.back();
-	}
-
 	function createNew() {
 		window.location.href = '/';
 	}
+	
+
 </script>
 
 <svelte:head>
@@ -58,7 +69,10 @@
 			<h2>Error</h2>
 			<p>{error}</p>
 			<div class="error-actions">
-				<button on:click={goBack} class="btn btn-secondary">Go Back</button>
+				<button on:click={() => {
+					currentLinkHash = 'error';
+					showTOCPopup = true;
+				}} class="btn btn-secondary">TOC</button>
 				<button on:click={createNew} class="btn btn-primary">Create New</button>
 			</div>
 		</div>
@@ -67,7 +81,9 @@
 			<div class="content-header">
 				<h2>Rendered Markdown</h2>
 				<div class="actions">
-					<button on:click={goBack} class="btn btn-secondary">← Back</button>
+					<button on:click={() => {
+						showTOCPopup = true;
+					}} class="btn btn-secondary">TOC</button>
 					<button on:click={createNew} class="btn btn-primary">Create New</button>
 				</div>
 			</div>
@@ -88,6 +104,13 @@
 			<div class="loading-spinner"></div>
 			<p>Loading content...</p>
 		</div>
+	{/if}
+
+	{#if showTOCPopup && currentLinkHash}
+		<TermsAndConditionsPopup 
+			linkHash={currentLinkHash}
+			on:close={() => showTOCPopup = false} 
+		/>
 	{/if}
 </main>
 

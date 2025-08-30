@@ -7,6 +7,7 @@
 
 	let markdownInput = '';
 	let shareableLink = '';
+	let originalContent = ''; // Track the content when link was generated
 	let characterCount = 0;
 	let showCopyNotification = false;
 	let showLearnMorePopup = false;
@@ -17,6 +18,7 @@
 		if (markdownInput.trim()) {
 			const encoded = btoa(unescape(encodeURIComponent(markdownInput)));
 			shareableLink = `${window.location.origin}/view#${encoded}`;
+			originalContent = markdownInput; // Store the content when link was generated
 		}
 	}
 
@@ -45,6 +47,12 @@
 
 	$: characterCount = markdownInput.length;
 	$: parsedTokens = markdownInput.trim() ? parseMarkdown(markdownInput) : [];
+	
+	// Hide link if content has been modified after generation
+	$: if (shareableLink && originalContent && markdownInput !== originalContent) {
+		shareableLink = '';
+		originalContent = '';
+	}
 </script>
 
 <svelte:head>
@@ -91,7 +99,7 @@
 		</button>
 	</div>
 
-	{#if shareableLink}
+	{#if shareableLink && markdownInput === originalContent}
 		<div class="link-section">
 			<h3>Your shareable link:</h3>
 			<div class="link-container">
@@ -157,9 +165,10 @@
 	}
 
 	.header p {
-		font-size: 1.2rem;
-		color: #7f8c8d;
-		margin: 0.5rem 0 0 0;
+		font-size: 1.1rem;
+		color: #95a5a6;
+		font-weight: 400;
+		letter-spacing: 0.02em;
 	}
 
 	.learn-more-btn {

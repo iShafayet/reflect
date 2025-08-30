@@ -7,9 +7,9 @@ export default defineConfig({
 	},
 	testDir: 'e2e',
 	use:{
-		headless: false,
-		launchOptions:{
-			slowMo: 1000
-		}
+		// headless: false,
+		// launchOptions:{
+		// 	slowMo: 1000
+		// }
 	}
 });
