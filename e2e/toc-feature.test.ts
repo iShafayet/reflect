@@ -157,7 +157,7 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		}
 		
 		// Click TOC button manually
-		await page.locator('.btn-secondary').click();
+		await page.locator('.content-header .btn-secondary').first().click();
 		
 		// TOC popup should be visible
 		await expect(page.locator('.popup-backdrop')).toBeVisible();
@@ -198,7 +198,7 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		
 		// Open TOC popup multiple times
 		for (let i = 0; i < 3; i++) {
-			await page.locator('.btn-secondary').click();
+			await page.locator('.content-header .btn-secondary').first().click();
 			await expect(page.locator('.popup-backdrop')).toBeVisible();
 			await page.locator('.close-btn').click();
 			await expect(page.locator('.popup-backdrop')).not.toBeVisible();

@@ -195,16 +195,17 @@ test.describe('Markdown Sharing Flow', () => {
 		await page.goto(`/view#${hash}`);
 		
 		// Note: Back button has been replaced with TOC button
-		
-		// Close TOC popup if it's open
+		// Close TOC popup if it's open first
 		const tocPopup = page.locator('.popup-backdrop');
 		if (await tocPopup.isVisible()) {
 			await page.locator('.got-it-btn').click();
 		}
 		
-		// Use create new button
-		await page.locator('button:has-text("Create New")').click();
-		await expect(page).toHaveURL('/');
+		// Click TOC button to go back to home
+		await page.locator('.content-header .btn-secondary').first().click();
+		await expect(page.locator('.popup-backdrop')).toBeVisible();
+		await page.locator('.got-it-btn').click();
+		await expect(page.locator('.popup-backdrop')).not.toBeVisible();
 	});
 
 	test('should handle markdown with special characters safely', async ({ page }) => {
