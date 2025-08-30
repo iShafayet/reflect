@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { TEST_CONSTANTS } from './test-constants';
 
 test.describe('Markdown Sharing Flow', () => {
 	test('should display home page with correct elements', async ({ page }) => {
@@ -14,7 +15,7 @@ test.describe('Markdown Sharing Flow', () => {
 		await expect(page.locator('.generate-btn')).toBeVisible();
 		
 		// Check character count
-		await expect(page.locator('.character-count')).toContainText('0/400');
+		await expect(page.locator('.character-count')).toContainText(`0/${TEST_CONSTANTS.MAX_CHARACTERS}`);
 	});
 
 	test('should handle markdown input and preview', async ({ page }) => {
@@ -30,8 +31,8 @@ test.describe('Markdown Sharing Flow', () => {
 		const markdownContent = '# Hello World\n\nThis is **bold** and *italic* text.\n\n- List item 1\n- List item 2';
 		await textarea.fill(markdownContent);
 		
-		// Check character count updates (note: textarea has maxlength=400)
-		await expect(page.locator('.character-count')).toContainText('79/400');
+		// Check character count updates (note: textarea has configurable maxlength)
+		await expect(page.locator('.character-count')).toContainText(`79/${TEST_CONSTANTS.MAX_CHARACTERS}`);
 		
 		// Preview should now be visible
 		await expect(previewSection).toBeVisible();
@@ -98,22 +99,32 @@ test.describe('Markdown Sharing Flow', () => {
 		// Fill with content under limit
 		const shortContent = 'A'.repeat(200);
 		await textarea.fill(shortContent);
-		await expect(characterCount).toContainText('200/400');
+		await expect(characterCount).toContainText(`200/${TEST_CONSTANTS.MAX_CHARACTERS}`);
 		await expect(generateBtn).toBeEnabled();
 		
 		// Fill with content at limit
-		const limitContent = 'A'.repeat(400);
+		const limitContent = 'A'.repeat(TEST_CONSTANTS.MAX_CHARACTERS);
 		await textarea.fill(limitContent);
-		await expect(characterCount).toContainText('400/400');
+		await expect(characterCount).toContainText(`${TEST_CONSTANTS.MAX_CHARACTERS}/${TEST_CONSTANTS.MAX_CHARACTERS}`);
 		await expect(generateBtn).toBeEnabled();
 		
-		// Fill with content over limit (textarea maxlength will truncate)
+		// Fill with content over limit (textarea maxlength will prevent input beyond limit)
 		const overLimitContent = 'A'.repeat(450);
 		await textarea.fill(overLimitContent);
-		// The textarea maxlength=400 will truncate to 400 characters
-		await expect(characterCount).toContainText('400/400');
-		await expect(characterCount).toHaveClass(/warning/);
-		await expect(generateBtn).toBeEnabled(); // Still enabled since content is within limit
+		// The textarea maxlength=1200 will allow 450 characters
+		await expect(characterCount).toContainText(`450/${TEST_CONSTANTS.MAX_CHARACTERS}`);
+		await expect(generateBtn).toBeEnabled(); // Enabled since content is within limit
+		
+		// Test actual limit enforcement by trying to type beyond maxlength
+		await textarea.fill(''); // Clear first
+		const atLimitContent = 'A'.repeat(TEST_CONSTANTS.MAX_CHARACTERS);
+		await textarea.fill(atLimitContent);
+		await expect(characterCount).toContainText(`${TEST_CONSTANTS.MAX_CHARACTERS}/${TEST_CONSTANTS.MAX_CHARACTERS}`);
+		
+		// Try to add more characters (should be prevented by maxlength)
+		await textarea.type('B');
+		await expect(characterCount).toContainText(`${TEST_CONSTANTS.MAX_CHARACTERS}/${TEST_CONSTANTS.MAX_CHARACTERS}`); // Should still be at max
+		await expect(generateBtn).toBeEnabled(); // Should still be enabled
 	});
 
 	test('should view shared markdown content', async ({ page }) => {

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { TEST_CONSTANTS } from './test-constants';
 
 test.describe('Basic App Functionality', () => {
 	test('should load home page with correct structure', async ({ page }) => {
@@ -16,7 +17,7 @@ test.describe('Basic App Functionality', () => {
 		await expect(page.locator('.generate-btn')).toBeVisible();
 		
 		// Check initial state
-		await expect(page.locator('.character-count')).toContainText('0/400');
+		await expect(page.locator('.character-count')).toContainText(`0/${TEST_CONSTANTS.MAX_CHARACTERS}`);
 		await expect(page.locator('.link-section')).not.toBeVisible();
 		await expect(page.locator('.preview-section')).not.toBeVisible();
 	});

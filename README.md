@@ -4,11 +4,12 @@ A simple web application that allows users to share markdown content through sha
 
 ## Features
 
-- **Markdown Input**: Enter markdown text (up to 400 characters)
+- **Markdown Input**: Enter markdown text (up to 1200 characters by default, configurable)
 - **Live Preview**: See how your markdown will look before sharing
 - **Shareable Links**: Generate links that contain the markdown data in the URL hash
 - **Client-side Only**: No server-side rendering or database required
 - **Base64 Encoding**: Markdown content is embedded directly in the URL using base64 encoding
+- **Configurable**: Easy to customize app name, description, and character limits
 
 ## How It Works
 
@@ -30,6 +31,8 @@ A simple web application that allows users to share markdown content through sha
 
 - Node.js (version 18 or higher)
 - npm
+
+
 
 ### Installation
 
@@ -64,7 +67,7 @@ The built files will be in the `build` directory.
 ### Creating Content
 
 1. Visit the main page (`/`)
-2. Enter your markdown text (maximum 400 characters)
+2. Enter your markdown text (maximum 1200 characters by default, configurable)
 3. Click "Generate Link" to create a shareable URL
 4. Copy the generated link to share with others
 
@@ -80,9 +83,11 @@ The built files will be in the `build` directory.
 - **Main Page**: `/` - Input form for creating markdown content
 - **View Page**: `/view#<base64-encoded-markdown>` - Displays rendered markdown
 
+
+
 ## Character Limit
 
-The application enforces a 400-character limit on markdown input to ensure URLs remain manageable and shareable.
+The application enforces a 1200-character limit on markdown input by default to ensure URLs remain manageable and shareable. You can customize this and other settings by copying `env.example` to `.env` and modifying the values.
 
 ## Contributing
 

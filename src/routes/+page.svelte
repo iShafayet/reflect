@@ -3,6 +3,7 @@
 	import { parseMarkdown } from '$lib/markdown';
 	import MarkdownRenderer from '$lib/MarkdownRenderer.svelte';
 	import LearnMorePopup from '$lib/LearnMorePopup.svelte';
+	import { config } from '../config';
 
 	let markdownInput = '';
 	let shareableLink = '';
@@ -10,7 +11,7 @@
 	let showCopyNotification = false;
 	let showLearnMorePopup = false;
 	let parsedTokens: any[] = [];
-	const maxCharacters = 400;
+	const maxCharacters = config.maxCharacters;
 
 	function generateLink() {
 		if (markdownInput.trim()) {
@@ -47,16 +48,16 @@
 </script>
 
 <svelte:head>
-	<title>Reflect - Share Your Thoughts</title>
+	<title>{config.appName} - Share Your Thoughts</title>
 </svelte:head>
 
 <main class="container">
 	<div class="header">
 		<div class="logo-container">
-			<img src="/logo.png" alt="Reflect Logo" class="logo" />
-			<h1>Reflect</h1>
+			<img src="/logo.png" alt="{config.appName} Logo" class="logo" />
+			<h1>{config.appName}</h1>
 		</div>
-		<p>Share your thoughts in markdown format</p>
+		<p>{config.appDescription}</p>
 		<button class="learn-more-btn" on:click={() => showLearnMorePopup = true}>
 			Learn More
 		</button>
