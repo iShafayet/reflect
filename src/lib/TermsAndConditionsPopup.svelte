@@ -61,24 +61,26 @@
 		</div>
 		
 		<div class="popup-body">
-			<div class="section">
-				<h3>📋 Terms of Service</h3>
-				<p>To be decided.</p>
-			</div>
-			
-			<div class="section">
-				<h3>🔒 Privacy Policy</h3>
-				<p>To be decided.</p>
-			</div>
-			
-			<div class="section">
-				<h3>📝 User Agreement</h3>
-				<p>To be decided.</p>
-			</div>
-			
-			<div class="section">
-				<h3>⚠️ Disclaimer</h3>
-				<p>To be decided.</p>
+			<div class="simple-content">
+				<p><strong>By continuing to use this app, you agree to the following Terms and Conditions:</strong></p>
+				
+				<ol>
+					<li>
+						<strong>No Data Storage:</strong> The markdown content is absolutely not stored on our server. Everything is processed inside your browser. All data, regardless of content, is encoded from your link. All responsibility lies with the generator of the link.
+					</li>
+					
+					<li>
+						<strong>No Developer Responsibility:</strong> We (developers) take absolutely zero responsibility for what messages are shared, as we have no way to know what was shared.
+					</li>
+					
+					<li>
+						<strong>No Platform Indexing:</strong> Our platform does not index the links. However, our host (GitHub) may collect logs for their own purposes. We are not responsible for that.
+					</li>
+				</ol>
+				
+				<div class="attribution">
+					<p>This is a free service brought to you by <a href="https://ishafayet.me" target="_blank" rel="noopener noreferrer">Sayem Shafayet</a>, a FOSS enthusiast.</p>
+				</div>
 			</div>
 		</div>
 		
@@ -173,31 +175,47 @@
 		overflow-y: auto;
 	}
 	
-	.section {
-		margin-bottom: 2rem;
+	.simple-content {
+		color: #34495e;
+		line-height: 1.6;
 	}
 	
-	.section:last-child {
+	.simple-content p {
+		margin: 0 0 1rem 0;
+	}
+	
+	.simple-content ol {
+		margin: 0 0 1.5rem 0;
+		padding-left: 1.5rem;
+	}
+	
+	.simple-content li {
+		margin-bottom: 1rem;
+	}
+	
+	.simple-content li:last-child {
 		margin-bottom: 0;
 	}
 	
-	.section h3 {
-		margin: 0 0 0.75rem 0;
-		color: #2c3e50;
-		font-size: 1.1rem;
-		font-weight: 600;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
+	.attribution {
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid #e0e0e0;
+		text-align: center;
+		font-size: 0.9rem;
+		color: #7f8c8d;
 	}
 	
-	.section p {
-		margin: 0;
-		color: #34495e;
-		line-height: 1.6;
-		font-style: italic;
+	.attribution a {
+		color: #3498db;
+		text-decoration: none;
+		font-weight: 600;
 	}
-
+	
+	.attribution a:hover {
+		text-decoration: underline;
+	}
+	
 	.popup-checkbox {
 		padding: 1rem 2rem;
 		border-top: 1px solid #e0e0e0;
