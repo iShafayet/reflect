@@ -80,7 +80,7 @@
 		<div class="content-section">
 			<div class="content-header">
 				<h2>Rendered Markdown</h2>
-				<div class="actions">
+				<div class="actions desktop-actions">
 					<button on:click={() => {
 						showTOCPopup = true;
 					}} class="btn btn-secondary">TOC</button>
@@ -90,6 +90,13 @@
 
 			<div class="markdown-content">
 				<MarkdownRenderer tokens={parsedTokens} />
+			</div>
+
+			<div class="mobile-actions">
+				<button on:click={() => {
+					showTOCPopup = true;
+				}} class="btn btn-secondary">TOC</button>
+				<button on:click={createNew} class="btn btn-primary">Create New</button>
 			</div>
 
 			<div class="raw-section">
@@ -208,6 +215,20 @@
 	.actions {
 		display: flex;
 		gap: 0.75rem;
+	}
+
+	.desktop-actions {
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	.mobile-actions {
+		display: none; /* Hide on desktop */
+		flex-direction: column;
+		gap: 0.75rem;
+		padding: 1.5rem;
+		border-top: 1px solid #e0e0e0;
+		background: #f8f9fa;
 	}
 
 	.btn {
@@ -435,6 +456,14 @@
 		.error-actions {
 			flex-direction: column;
 			align-items: center;
+		}
+
+		.mobile-actions {
+			display: flex; /* Show on mobile */
+		}
+
+		.desktop-actions {
+			display: none; /* Hide on mobile */
 		}
 	}
 
