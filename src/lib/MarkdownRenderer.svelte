@@ -115,6 +115,9 @@
 		line-height: 1.6;
 		color: #2c3e50;
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		hyphens: auto;
 	}
 
 	.markdown-content :global(h1) {
@@ -157,6 +160,9 @@
 
 	.markdown-content :global(p) {
 		margin: 1rem 0;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		white-space: pre-wrap;
 	}
 
 	.markdown-content :global(ul),
@@ -167,6 +173,8 @@
 
 	.markdown-content :global(li) {
 		margin: 0.5rem 0;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
 	}
 
 	.markdown-content :global(strong) {
@@ -185,6 +193,8 @@
 		background: #f8f9fa;
 		font-style: italic;
 		color: #5a6c7d;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
 	}
 
 	.markdown-content :global(blockquote p) {
