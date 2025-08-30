@@ -17,7 +17,7 @@
 	function generateLink() {
 		if (markdownInput.trim()) {
 			const encoded = btoa(unescape(encodeURIComponent(markdownInput)));
-			shareableLink = `${window.location.origin}/view#${encoded}`;
+			shareableLink = `${window.location.origin}/#/view/${encoded}`;
 			originalContent = markdownInput; // Store the content when link was generated
 		}
 	}

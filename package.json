@@ -14,13 +14,15 @@
 		"lint": "prettier --check . && eslint .",
 		"test:e2e": "playwright test",
 		"test": "npm run test:e2e && npm run test:unit",
-		"test:unit": "vitest --project=server --run"
+		"test:unit": "vitest --project=server --run",
+		"local-simple-http-server": "python -m http.server 8000 --directory build"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
 		"@playwright/test": "^1.49.1",
 		"@sveltejs/adapter-auto": "^6.0.0",
+		"@sveltejs/adapter-static": "^3.0.9",
 		"@sveltejs/kit": "^2.22.0",
 		"@sveltejs/vite-plugin-svelte": "^6.0.0",
 		"@vitest/browser": "^3.2.3",

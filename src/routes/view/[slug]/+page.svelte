@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
 	import { parseMarkdown, decodeMarkdownFromHash } from '$lib/markdown';
 	import MarkdownRenderer from '$lib/MarkdownRenderer.svelte';
 	import TermsAndConditionsPopup from '$lib/TermsAndConditionsPopup.svelte';
@@ -14,23 +13,32 @@
 	let currentLinkHash = '';
 
 	onMount(async () => {
-		// Get the hash from the URL
-		const hash = window.location.hash.substring(1);
+		// Get the hash from the URL - with hash routing, it will be like #/view/encodedContent
+		const hash = window.location.hash.substring(1); // Remove the #
+		
+		// Extract the encoded content from the hash
+		// Hash format: /view/encodedContent
+		const parts = hash.split('/');
+		if (parts.length < 3 || parts[1] !== 'view') {
+			error = 'Invalid URL format. Expected: /#/view/encodedContent';
+			return;
+		}
 
-		if (!hash) {
+		const encodedContent = parts[2];
+		if (!encodedContent) {
 			error = 'No markdown content found in the URL.';
 			return;
 		}
 
 		try {
 			// Decode the base64 content using the utility function
-			decodedContent = decodeMarkdownFromHash(hash);
+			decodedContent = decodeMarkdownFromHash(encodedContent);
 			markdownContent = decodedContent;
 			// Parse markdown to tokens
 			parsedTokens = parseMarkdown(markdownContent);
 			
 			// Generate link hash for localStorage tracking
-			currentLinkHash = await localStorageKey(hash);
+			currentLinkHash = await localStorageKey(encodedContent);
 			
 			// Check if TOC should be shown for this link
 			const tocHidden = localStorage.getItem(`toc_hidden_${currentLinkHash}`);
@@ -46,8 +54,6 @@
 	function createNew() {
 		window.location.href = '/';
 	}
-	
-
 </script>
 
 <svelte:head>
