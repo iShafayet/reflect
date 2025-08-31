@@ -151,9 +151,11 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		await page.goto(linkValue);
 		
 		// Close initial TOC popup if it appears
+		await page.waitForLoadState('networkidle');
 		const tocPopup = page.locator('.popup-backdrop');
 		if (await tocPopup.isVisible()) {
 			await page.locator('.got-it-btn').click();
+			await page.waitForTimeout(500); // Wait for popup to close
 		}
 		
 		// Click TOC button manually
@@ -166,7 +168,7 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 
 	test('should display TOC popup on error pages', async ({ page }) => {
 		// Navigate to an invalid link to trigger error
-		await page.goto('/view#invalid-hash');
+		await page.goto('/#/view/invalid-hash');
 		
 		// Error should be displayed
 		await expect(page.locator('.error-section')).toBeVisible();
@@ -191,9 +193,11 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		await page.goto(linkValue);
 		
 		// Close initial TOC popup if it appears
+		await page.waitForLoadState('networkidle');
 		const tocPopup = page.locator('.popup-backdrop');
 		if (await tocPopup.isVisible()) {
 			await page.locator('.got-it-btn').click();
+			await page.waitForTimeout(500); // Wait for popup to close
 		}
 		
 		// Open TOC popup multiple times
