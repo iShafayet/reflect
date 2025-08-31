@@ -15,7 +15,7 @@
 	onMount(async () => {
 		// Get the hash from the URL - with hash routing, it will be like #/view/encodedContent
 		const hash = window.location.hash.substring(1); // Remove the #
-		
+
 		// Extract the encoded content from the hash
 		// Hash format: /view/encodedContent
 		const parts = hash.split('/');
@@ -36,10 +36,10 @@
 			markdownContent = decodedContent;
 			// Parse markdown to tokens
 			parsedTokens = parseMarkdown(markdownContent);
-			
+
 			// Generate link hash for localStorage tracking
 			currentLinkHash = await localStorageKey(encodedContent);
-			
+
 			// Check if TOC should be shown for this link
 			const tocHidden = localStorage.getItem(`toc_hidden_${currentLinkHash}`);
 			if (!tocHidden) {
@@ -61,35 +61,40 @@
 </svelte:head>
 
 <main class="container">
-	<div class="header">
-		<div class="logo-container">
-			<img src="/logo.png" alt="Reflect Logo" class="logo" />
-			<h1>Reflect</h1>
-		</div>
-		<p>Shared markdown content</p>
-	</div>
-
 	{#if error}
 		<div class="error-section">
+			<div class="logo-container">
+				<img src="/logo.png" alt="Reflect Logo" class="logo" />
+				<h1>Reflect</h1>
+			</div>
 			<div class="error-icon">⚠️</div>
 			<h2>Error</h2>
 			<p>{error}</p>
 			<div class="error-actions">
-				<button on:click={() => {
-					currentLinkHash = 'error';
-					showTOCPopup = true;
-				}} class="btn btn-secondary">TOC</button>
+				<button
+					on:click={() => {
+						currentLinkHash = 'error';
+						showTOCPopup = true;
+					}}
+					class="btn btn-secondary">TOC</button
+				>
 				<button on:click={createNew} class="btn btn-primary">Create New</button>
 			</div>
 		</div>
 	{:else if markdownContent}
 		<div class="content-section">
 			<div class="content-header">
-				<h2>Rendered Markdown</h2>
+				<div class="logo-container">
+					<img src="/logo.png" alt="Reflect Logo" class="logo" />
+					<h1>Reflect</h1>
+				</div>
 				<div class="actions desktop-actions">
-					<button on:click={() => {
-						showTOCPopup = true;
-					}} class="btn btn-secondary">TOC</button>
+					<button
+						on:click={() => {
+							showTOCPopup = true;
+						}}
+						class="btn btn-secondary">TOC</button
+					>
 					<button on:click={createNew} class="btn btn-primary">Create New</button>
 				</div>
 			</div>
@@ -99,9 +104,12 @@
 			</div>
 
 			<div class="mobile-actions">
-				<button on:click={() => {
-					showTOCPopup = true;
-				}} class="btn btn-secondary">TOC</button>
+				<button
+					on:click={() => {
+						showTOCPopup = true;
+					}}
+					class="btn btn-secondary">TOC</button
+				>
 				<button on:click={createNew} class="btn btn-primary">Create New</button>
 			</div>
 
@@ -120,10 +128,7 @@
 	{/if}
 
 	{#if showTOCPopup && currentLinkHash}
-		<TermsAndConditionsPopup 
-			linkHash={currentLinkHash}
-			on:close={() => showTOCPopup = false} 
-		/>
+		<TermsAndConditionsPopup linkHash={currentLinkHash} on:close={() => (showTOCPopup = false)} />
 	{/if}
 </main>
 
@@ -133,19 +138,16 @@
 		margin: 0 auto;
 		padding: 2rem;
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-	}
-
-	.header {
-		text-align: center;
-		margin-bottom: 3rem;
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	.logo-container {
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		gap: 1rem;
-		margin-bottom: 1rem;
 	}
 
 	.logo {
@@ -154,17 +156,11 @@
 		object-fit: contain;
 	}
 
-	.header h1 {
-		font-size: 3rem;
+	.logo-container h1 {
+		font-size: 2rem;
 		margin: 0;
 		color: #2c3e50;
 		font-weight: 700;
-	}
-
-	.header p {
-		font-size: 1.2rem;
-		color: #7f8c8d;
-		margin: 0.5rem 0 0 0;
 	}
 
 	.error-section {
@@ -211,11 +207,6 @@
 		padding: 1.5rem;
 		border-bottom: 1px solid #e0e0e0;
 		background: #f8f9fa;
-	}
-
-	.content-header h2 {
-		margin: 0;
-		color: #2c3e50;
 	}
 
 	.actions {
@@ -447,12 +438,21 @@
 	@media (max-width: 768px) {
 		.container {
 			padding: 1rem;
+			min-height: 100vh;
 		}
 
 		.content-header {
 			flex-direction: column;
 			gap: 1rem;
 			align-items: stretch;
+		}
+
+		.logo-container {
+			justify-content: center;
+		}
+
+		.logo-container h1 {
+			font-size: 2.5rem;
 		}
 
 		.actions {
@@ -479,18 +479,7 @@
 			padding: 0.75rem;
 			margin: 0;
 			max-width: 100%;
-		}
-
-		.header {
-			margin-bottom: 2rem;
-		}
-
-		.header h1 {
-			font-size: 2.5rem;
-		}
-
-		.header p {
-			font-size: 1rem;
+			min-height: 100vh;
 		}
 
 		.logo {
@@ -498,16 +487,15 @@
 			height: 40px;
 		}
 
+		.logo-container h1 {
+			font-size: 1.75rem;
+		}
+
 		.content-header {
 			padding: 1rem;
 			flex-direction: column;
 			gap: 1rem;
 			align-items: stretch;
-		}
-
-		.content-header h2 {
-			font-size: 1.5rem;
-			text-align: center;
 		}
 
 		.actions {
@@ -605,12 +593,21 @@
 	@media (max-width: 768px) and (min-width: 481px) {
 		.container {
 			padding: 1.5rem;
+			min-height: 100vh;
 		}
 
 		.content-header {
 			flex-direction: column;
 			gap: 1rem;
 			align-items: stretch;
+		}
+
+		.logo-container {
+			justify-content: center;
+		}
+
+		.logo-container h1 {
+			font-size: 2.25rem;
 		}
 
 		.actions {
