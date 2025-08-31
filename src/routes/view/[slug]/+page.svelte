@@ -4,6 +4,7 @@
 	import MarkdownRenderer from '$lib/MarkdownRenderer.svelte';
 	import TermsAndConditionsPopup from '$lib/TermsAndConditionsPopup.svelte';
 	import { localStorageKey } from '$lib/crypto-utils';
+	import { prefillContentOnce } from '$lib/stores';
 
 	let markdownContent = '';
 	let decodedContent = '';
@@ -11,6 +12,7 @@
 	let parsedTokens: any[] = [];
 	let showTOCPopup = false;
 	let currentLinkHash = '';
+	let showCopyNotification = false;
 
 	onMount(async () => {
 		// Get the hash from the URL - with hash routing, it will be like #/view/encodedContent
@@ -52,6 +54,24 @@
 	});
 
 	function createNew() {
+		window.location.href = '/';
+	}
+
+	function copyToClipboard() {
+		navigator.clipboard.writeText(decodedContent).then(() => {
+			showCopyNotification = true;
+			setTimeout(() => {
+				showCopyNotification = false;
+			}, 2000);
+		}).catch(err => {
+			console.error('Failed to copy content:', err);
+		});
+	}
+
+	function forkContent() {
+		// Set the content in the store for the creation page to use
+		prefillContentOnce.set(decodedContent);
+		// Redirect to creation page
 		window.location.href = '/';
 	}
 </script>
@@ -116,7 +136,17 @@
 			<div class="raw-section">
 				<details>
 					<summary>View Raw Markdown</summary>
-					<pre class="raw-content">{decodedContent}</pre>
+					<div class="raw-content-container">
+						<div class="raw-actions">
+							<button on:click={copyToClipboard} class="btn btn-secondary btn-small">
+								📋 Copy to Clipboard
+							</button>
+							<button on:click={forkContent} class="btn btn-primary btn-small">
+								🔀 Fork
+							</button>
+						</div>
+						<pre class="raw-content">{decodedContent}</pre>
+					</div>
 				</details>
 			</div>
 		</div>
@@ -129,6 +159,12 @@
 
 	{#if showTOCPopup && currentLinkHash}
 		<TermsAndConditionsPopup linkHash={currentLinkHash} on:close={() => (showTOCPopup = false)} />
+	{/if}
+
+	{#if showCopyNotification}
+		<div class="copy-notification">
+			✅ Content copied to clipboard!
+		</div>
 	{/if}
 </main>
 
@@ -258,6 +294,35 @@
 		background: #7f8c8d;
 	}
 
+	.btn-small:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.copy-notification {
+		position: fixed;
+		top: 20px;
+		right: 20px;
+		background: #27ae60;
+		color: white;
+		padding: 1rem 1.5rem;
+		border-radius: 6px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		animation: slideIn 0.3s ease-out;
+		z-index: 1000;
+	}
+
+	@keyframes slideIn {
+		from {
+			transform: translateX(100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
 	.markdown-content {
 		padding: 2rem;
 		line-height: 1.6;
@@ -378,6 +443,22 @@
 		padding: 1.5rem;
 		border-top: 1px solid #e0e0e0;
 		background: #f8f9fa;
+	}
+
+	.raw-content-container {
+		margin-top: 1rem;
+	}
+
+	.raw-actions {
+		display: flex;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
+		justify-content: flex-start;
+	}
+
+	.btn-small {
+		padding: 0.5rem 1rem;
+		font-size: 0.85rem;
 	}
 
 	.raw-section summary {
@@ -553,6 +634,16 @@
 			padding: 1rem;
 		}
 
+		.raw-actions {
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
+		.btn-small {
+			width: 100%;
+			padding: 0.75rem;
+		}
+
 		.raw-content {
 			padding: 0.75rem;
 			font-size: 0.75rem;
@@ -617,6 +708,16 @@
 
 		.btn {
 			width: 100%;
+		}
+
+		.raw-actions {
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
+		.btn-small {
+			width: 100%;
+			padding: 0.75rem;
 		}
 	}
 </style>

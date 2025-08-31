@@ -1,18 +1,35 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	import { parseMarkdown } from '$lib/markdown';
 	import MarkdownRenderer from '$lib/MarkdownRenderer.svelte';
 	import LearnMorePopup from '$lib/LearnMorePopup.svelte';
 	import { config } from '../config';
-
+	import { prefillContentOnce } from '$lib/stores';
 	let markdownInput = '';
 	let shareableLink = '';
 	let originalContent = ''; // Track the content when link was generated
 	let characterCount = 0;
 	let showCopyNotification = false;
 	let showLearnMorePopup = false;
+	let showForkNotification = false;
 	let parsedTokens: any[] = [];
 	const maxCharacters = config.maxCharacters;
+
+	// Handle prefilled content from store (e.g., when forking from view page)
+	onMount(() => {
+		const content = get(prefillContentOnce);
+		if (content) {
+			markdownInput = content;
+			// Show fork success notification
+			showForkNotification = true;
+			setTimeout(() => {
+				showForkNotification = false;
+			}, 3000);
+			// Clear the store after using the content
+			prefillContentOnce.set(null);
+		}
+	});
 
 	function generateLink() {
 		if (markdownInput.trim()) {
@@ -113,6 +130,12 @@
 	{#if showCopyNotification}
 		<div class="copy-notification">
 			✅ Link copied to clipboard!
+		</div>
+	{/if}
+
+	{#if showForkNotification}
+		<div class="copy-notification fork-notification">
+			🔀 Content forked successfully!
 		</div>
 	{/if}
 
@@ -410,6 +433,11 @@
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 		animation: slideIn 0.3s ease-out;
 		z-index: 1000;
+	}
+
+	.fork-notification {
+		background: #3498db;
+		top: 80px; /* Position below the copy notification */
 	}
 
 	@keyframes slideIn {
