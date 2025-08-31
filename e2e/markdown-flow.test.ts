@@ -37,11 +37,12 @@ test.describe('Markdown Sharing Flow', () => {
 		// Preview should now be visible
 		await expect(previewSection).toBeVisible();
 		
-		// Check preview content (shows concatenated text without markdown syntax)
-		await expect(page.locator('.preview-content')).toContainText('Hello World');
-		await expect(page.locator('.preview-content')).toContainText('This is **bold** and *italic* text');
-		await expect(page.locator('.preview-content')).toContainText('List item 1');
-		await expect(page.locator('.preview-content')).toContainText('List item 2');
+		// Check preview content (now shows properly rendered markdown)
+		await expect(page.locator('.preview-content h1')).toHaveText('Hello World');
+		await expect(page.locator('.preview-content strong')).toHaveText('bold');
+		await expect(page.locator('.preview-content em')).toHaveText('italic');
+		await expect(page.locator('.preview-content li').first()).toContainText('List item 1');
+		await expect(page.locator('.preview-content li').nth(1)).toContainText('List item 2');
 	});
 
 	test('should generate shareable link', async ({ page }) => {
@@ -224,15 +225,14 @@ test.describe('Markdown Sharing Flow', () => {
 		// Generate link
 		await page.locator('.generate-btn').click();
 		const linkValue = await page.locator('.link-input').inputValue();
-		const hash = linkValue.split('#')[1];
 		
 		// View the shared content
 		await page.goto(linkValue);
 		
 		// Content should be rendered safely (no script execution)
 		await expect(page.locator('.markdown-content h1')).toHaveText('Safe Heading');
-		// The markdown renderer shows the raw markdown text, not rendered HTML
-		await expect(page.locator('.markdown-content p')).toContainText('This is **safe** content');
+		// The markdown renderer now properly renders the content
+		await expect(page.locator('.markdown-content strong')).toHaveText('safe');
 		
 		// Raw content should show the original text
 		// Close TOC popup if it's open

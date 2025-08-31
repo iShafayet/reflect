@@ -2,32 +2,375 @@
 	import type { MarkdownToken } from './markdown';
 
 	export let tokens: MarkdownToken[];
+
+	// Recursive component to safely render nested tokens
+	function renderNestedTokens(tokenList: MarkdownToken[]): any[] {
+		const result = [];
+		for (const token of tokenList) {
+			if (token.type === 'text') {
+				// For text tokens, check if they have nested tokens (like in list items)
+				if (token.tokens && token.tokens.length > 0) {
+					// This is a text token with nested formatting tokens
+					result.push(...renderNestedTokens(token.tokens));
+				} else {
+					// This is just plain text
+					result.push(token.text || '');
+				}
+			} else if (token.type === 'strong') {
+				result.push({
+					type: 'strong',
+					content: renderNestedTokens(token.tokens || [])
+				});
+			} else if (token.type === 'em') {
+				result.push({
+					type: 'em',
+					content: renderNestedTokens(token.tokens || [])
+				});
+			} else if (token.type === 'codespan') {
+				result.push({
+					type: 'codespan',
+					content: token.text || ''
+				});
+			} else {
+				result.push(token.text || '');
+			}
+		}
+		return result;
+	}
 </script>
 
 <div class="markdown-content">
 	{#each tokens as token}
 		{#if token.type === 'heading'}
 			{#if token.depth === 1}
-				<h1>{token.text}</h1>
+				<h1>
+					{#each renderNestedTokens(token.tokens || []) as item}
+						{#if typeof item === 'string'}
+							{item}
+						{:else if item.type === 'strong'}
+							<strong>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'em'}
+										<em>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</em>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</strong>
+						{:else if item.type === 'em'}
+							<em>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'strong'}
+										<strong>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</strong>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</em>
+						{:else if item.type === 'codespan'}
+							<code>{item.content}</code>
+						{/if}
+					{/each}
+				</h1>
 			{:else if token.depth === 2}
-				<h2>{token.text}</h2>
+				<h2>
+					{#each renderNestedTokens(token.tokens || []) as item}
+						{#if typeof item === 'string'}
+							{item}
+						{:else if item.type === 'strong'}
+							<strong>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'em'}
+										<em>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</em>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</strong>
+						{:else if item.type === 'em'}
+							<em>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'strong'}
+										<strong>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</strong>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</em>
+						{:else if item.type === 'codespan'}
+							<code>{item.content}</code>
+						{/if}
+					{/each}
+				</h2>
 			{:else if token.depth === 3}
-				<h3>{token.text}</h3>
+				<h3>
+					{#each renderNestedTokens(token.tokens || []) as item}
+						{#if typeof item === 'string'}
+							{item}
+						{:else if item.type === 'strong'}
+							<strong>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'em'}
+										<em>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</em>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</strong>
+						{:else if item.type === 'em'}
+							<em>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'strong'}
+										<strong>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</strong>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</em>
+						{:else if item.type === 'codespan'}
+							<code>{item.content}</code>
+						{/if}
+					{/each}
+				</h3>
 			{:else if token.depth === 4}
-				<h4>{token.text}</h4>
+				<h4>
+					{#each renderNestedTokens(token.tokens || []) as item}
+						{#if typeof item === 'string'}
+							{item}
+						{:else if item.type === 'strong'}
+							<strong>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'em'}
+										<em>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</em>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</strong>
+						{:else if item.type === 'em'}
+							<em>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'strong'}
+										<strong>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</strong>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</em>
+						{:else if item.type === 'codespan'}
+							<code>{item.content}</code>
+						{/if}
+					{/each}
+				</h4>
 			{:else if token.depth === 5}
-				<h5>{token.text}</h5>
+				<h5>
+					{#each renderNestedTokens(token.tokens || []) as item}
+						{#if typeof item === 'string'}
+							{item}
+						{:else if item.type === 'strong'}
+							<strong>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'em'}
+										<em>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</em>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</strong>
+						{:else if item.type === 'em'}
+							<em>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'strong'}
+										<strong>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</strong>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</em>
+						{:else if item.type === 'codespan'}
+							<code>{item.content}</code>
+						{/if}
+					{/each}
+				</h5>
 			{:else if token.depth === 6}
-				<h6>{token.text}</h6>
+				<h6>
+					{#each renderNestedTokens(token.tokens || []) as item}
+						{#if typeof item === 'string'}
+							{item}
+						{:else if item.type === 'strong'}
+							<strong>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'em'}
+										<em>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</em>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</strong>
+						{:else if item.type === 'em'}
+							<em>
+								{#each item.content as contentItem}
+									{#if typeof contentItem === 'string'}
+										{contentItem}
+									{:else if contentItem.type === 'strong'}
+										<strong>
+											{#each contentItem.content as deepItem}
+												{deepItem}
+											{/each}
+										</strong>
+									{:else if contentItem.type === 'codespan'}
+										<code>{contentItem.content}</code>
+									{/if}
+								{/each}
+							</em>
+						{:else if item.type === 'codespan'}
+							<code>{item.content}</code>
+						{/if}
+					{/each}
+				</h6>
 			{/if}
 		{:else if token.type === 'paragraph'}
-			<p>{token.text}</p>
+			<p>
+				{#each renderNestedTokens(token.tokens || []) as item}
+					{#if typeof item === 'string'}
+						{item}
+					{:else if item.type === 'strong'}
+						<strong>
+							{#each item.content as contentItem}
+								{#if typeof contentItem === 'string'}
+									{contentItem}
+								{:else if contentItem.type === 'em'}
+									<em>
+										{#each contentItem.content as deepItem}
+											{deepItem}
+										{/each}
+									</em>
+								{:else if contentItem.type === 'codespan'}
+									<code>{contentItem.content}</code>
+								{/if}
+							{/each}
+						</strong>
+					{:else if item.type === 'em'}
+						<em>
+							{#each item.content as contentItem}
+								{#if typeof contentItem === 'string'}
+									{contentItem}
+								{:else if contentItem.type === 'strong'}
+									<strong>
+										{#each contentItem.content as deepItem}
+											{deepItem}
+										{/each}
+									</strong>
+								{:else if contentItem.type === 'codespan'}
+									<code>{contentItem.content}</code>
+								{/if}
+							{/each}
+						</em>
+					{:else if item.type === 'codespan'}
+						<code>{item.content}</code>
+					{/if}
+				{/each}
+			</p>
 		{:else if token.type === 'text'}
 			{token.text}
 		{:else if token.type === 'strong'}
-			<strong>{token.text}</strong>
+			<strong>
+				{#each renderNestedTokens(token.tokens || []) as item}
+					{#if typeof item === 'string'}
+						{item}
+					{:else if item.type === 'em'}
+						<em>
+							{#each item.content as deepItem}
+								{deepItem}
+							{/each}
+						</em>
+					{:else if item.type === 'codespan'}
+						<code>{item.content}</code>
+					{/if}
+				{/each}
+			</strong>
 		{:else if token.type === 'em'}
-			<em>{token.text}</em>
+			<em>
+				{#each renderNestedTokens(token.tokens || []) as item}
+					{#if typeof item === 'string'}
+						{item}
+					{:else if item.type === 'strong'}
+						<strong>
+							{#each item.content as deepItem}
+								{deepItem}
+							{/each}
+						</strong>
+					{:else if item.type === 'codespan'}
+						<code>{item.content}</code>
+					{/if}
+				{/each}
+			</em>
 		{:else if token.type === 'code'}
 			<pre><code>{token.text}</code></pre>
 		{:else if token.type === 'codespan'}
@@ -37,15 +380,43 @@
 				<ol>
 					{#each token.items || [] as item}
 						<li>
-							{#each item.tokens || [] as subToken}
-								{#if subToken.type === 'text'}
-									{subToken.text}
-								{:else if subToken.type === 'strong'}
-									<strong>{subToken.text}</strong>
-								{:else if subToken.type === 'em'}
-									<em>{subToken.text}</em>
-								{:else if subToken.type === 'codespan'}
-									<code>{subToken.text}</code>
+							{#each renderNestedTokens(item.tokens || []) as itemContent}
+								{#if typeof itemContent === 'string'}
+									{itemContent}
+								{:else if itemContent.type === 'strong'}
+									<strong>
+										{#each itemContent.content as contentItem}
+											{#if typeof contentItem === 'string'}
+												{contentItem}
+											{:else if contentItem.type === 'em'}
+												<em>
+													{#each contentItem.content as deepItem}
+														{deepItem}
+													{/each}
+												</em>
+											{:else if contentItem.type === 'codespan'}
+												<code>{contentItem.content}</code>
+											{/if}
+										{/each}
+									</strong>
+								{:else if itemContent.type === 'em'}
+									<em>
+										{#each itemContent.content as contentItem}
+											{#if typeof contentItem === 'string'}
+												{contentItem}
+											{:else if contentItem.type === 'strong'}
+												<strong>
+													{#each contentItem.content as deepItem}
+														{deepItem}
+													{/each}
+												</strong>
+											{:else if contentItem.type === 'codespan'}
+												<code>{contentItem.content}</code>
+											{/if}
+										{/each}
+									</em>
+								{:else if itemContent.type === 'codespan'}
+									<code>{itemContent.content}</code>
 								{/if}
 							{/each}
 						</li>
@@ -55,15 +426,43 @@
 				<ul>
 					{#each token.items || [] as item}
 						<li>
-							{#each item.tokens || [] as subToken}
-								{#if subToken.type === 'text'}
-									{subToken.text}
-								{:else if subToken.type === 'strong'}
-									<strong>{subToken.text}</strong>
-								{:else if subToken.type === 'em'}
-									<em>{subToken.text}</em>
-								{:else if subToken.type === 'codespan'}
-									<code>{subToken.text}</code>
+							{#each renderNestedTokens(item.tokens || []) as itemContent}
+								{#if typeof itemContent === 'string'}
+									{itemContent}
+								{:else if itemContent.type === 'strong'}
+									<strong>
+										{#each itemContent.content as contentItem}
+											{#if typeof contentItem === 'string'}
+												{contentItem}
+											{:else if contentItem.type === 'em'}
+												<em>
+													{#each contentItem.content as deepItem}
+														{deepItem}
+													{/each}
+												</em>
+											{:else if contentItem.type === 'codespan'}
+												<code>{contentItem.content}</code>
+											{/if}
+										{/each}
+									</strong>
+								{:else if itemContent.type === 'em'}
+									<em>
+										{#each itemContent.content as contentItem}
+											{#if typeof contentItem === 'string'}
+												{contentItem}
+											{:else if contentItem.type === 'strong'}
+												<strong>
+													{#each contentItem.content as deepItem}
+														{deepItem}
+													{/each}
+												</strong>
+											{:else if contentItem.type === 'codespan'}
+												<code>{contentItem.content}</code>
+											{/if}
+										{/each}
+									</em>
+								{:else if itemContent.type === 'codespan'}
+									<code>{itemContent.content}</code>
 								{/if}
 							{/each}
 						</li>
@@ -72,15 +471,43 @@
 			{/if}
 		{:else if token.type === 'list_item'}
 			<li>
-				{#each token.tokens || [] as subToken}
-					{#if subToken.type === 'text'}
-						{subToken.text}
-					{:else if subToken.type === 'strong'}
-						<strong>{subToken.text}</strong>
-					{:else if subToken.type === 'em'}
-						<em>{subToken.text}</em>
-					{:else if subToken.type === 'codespan'}
-						<code>{subToken.text}</code>
+				{#each renderNestedTokens(token.tokens || []) as item}
+					{#if typeof item === 'string'}
+						{item}
+					{:else if item.type === 'strong'}
+						<strong>
+							{#each item.content as contentItem}
+								{#if typeof contentItem === 'string'}
+									{contentItem}
+								{:else if contentItem.type === 'em'}
+									<em>
+										{#each contentItem.content as deepItem}
+											{deepItem}
+										{/each}
+									</em>
+								{:else if contentItem.type === 'codespan'}
+									<code>{contentItem.content}</code>
+								{/if}
+							{/each}
+						</strong>
+					{:else if item.type === 'em'}
+						<em>
+							{#each item.content as contentItem}
+								{#if typeof contentItem === 'string'}
+									{contentItem}
+								{:else if contentItem.type === 'strong'}
+									<strong>
+										{#each contentItem.content as deepItem}
+											{deepItem}
+										{/each}
+									</strong>
+								{:else if contentItem.type === 'codespan'}
+									<code>{contentItem.content}</code>
+								{/if}
+							{/each}
+						</em>
+					{:else if item.type === 'codespan'}
+						<code>{item.content}</code>
 					{/if}
 				{/each}
 			</li>
@@ -88,13 +515,81 @@
 			<blockquote>
 				{#each token.tokens || [] as subToken}
 					{#if subToken.type === 'paragraph'}
-						<p>{subToken.text}</p>
+						<p>
+							{#each renderNestedTokens(subToken.tokens || []) as item}
+								{#if typeof item === 'string'}
+									{item}
+								{:else if item.type === 'strong'}
+									<strong>
+										{#each item.content as contentItem}
+											{#if typeof contentItem === 'string'}
+												{contentItem}
+											{:else if contentItem.type === 'em'}
+												<em>
+													{#each contentItem.content as deepItem}
+														{deepItem}
+													{/each}
+												</em>
+											{:else if contentItem.type === 'codespan'}
+												<code>{contentItem.content}</code>
+											{/if}
+										{/each}
+									</strong>
+								{:else if item.type === 'em'}
+									<em>
+										{#each item.content as contentItem}
+											{#if typeof contentItem === 'string'}
+												{contentItem}
+											{:else if contentItem.type === 'strong'}
+												<strong>
+													{#each contentItem.content as deepItem}
+														{deepItem}
+													{/each}
+												</strong>
+											{:else if contentItem.type === 'codespan'}
+												<code>{contentItem.content}</code>
+											{/if}
+										{/each}
+									</em>
+								{:else if item.type === 'codespan'}
+									<code>{item.content}</code>
+								{/if}
+							{/each}
+						</p>
 					{:else if subToken.type === 'text'}
 						{subToken.text}
 					{:else if subToken.type === 'strong'}
-						<strong>{subToken.text}</strong>
+						<strong>
+							{#each renderNestedTokens(subToken.tokens || []) as item}
+								{#if typeof item === 'string'}
+									{item}
+								{:else if item.type === 'em'}
+									<em>
+										{#each item.content as deepItem}
+											{deepItem}
+										{/each}
+									</em>
+								{:else if item.type === 'codespan'}
+									<code>{item.content}</code>
+								{/if}
+							{/each}
+						</strong>
 					{:else if subToken.type === 'em'}
-						<em>{subToken.text}</em>
+						<em>
+							{#each renderNestedTokens(subToken.tokens || []) as item}
+								{#if typeof item === 'string'}
+									{item}
+								{:else if item.type === 'strong'}
+									<strong>
+										{#each item.content as deepItem}
+											{deepItem}
+										{/each}
+									</strong>
+								{:else if item.type === 'codespan'}
+									<code>{item.content}</code>
+								{/if}
+							{/each}
+						</em>
 					{:else if subToken.type === 'codespan'}
 						<code>{subToken.text}</code>
 					{/if}
