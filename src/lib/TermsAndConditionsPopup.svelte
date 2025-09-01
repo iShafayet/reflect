@@ -62,21 +62,31 @@
 		
 		<div class="popup-body">
 			<div class="simple-content">
-				<p><strong>By continuing to use this app, you agree to the following Terms and Conditions:</strong></p>
+				<p><strong>Welcome! Here's everything you need to know to use our service safely:</strong></p>
 				
 				<ol>
 					<li>
-						<strong>No Data Storage:</strong> The markdown content is absolutely not stored on our server. Everything is processed inside your browser. All data, regardless of content, is encoded from your link. All responsibility lies with the generator of the link.
+						<strong>Your Privacy is Protected:</strong> We don't store any of your content on our servers. Everything stays in your browser and is encoded in the link itself. Only the person who creates the link is responsible for what's shared.
 					</li>
 					
 					<li>
-						<strong>No Developer Responsibility:</strong> We (developers) take absolutely zero responsibility for what messages are shared, as we have no way to know what was shared.
+						<strong>We Can't See Your Content:</strong> Since we don't store anything, we have no way to know what content is being shared through our service. This means we can't be held responsible for what users choose to share.
 					</li>
 					
 					<li>
-						<strong>No Platform Indexing:</strong> Our platform does not index the links. However, our host (GitHub) may collect logs for their own purposes. We are not responsible for that.
+						<strong>No Search Indexing:</strong> We don't index or catalog any links. However, our hosting provider (GitHub) may keep standard server logs for their own technical purposes.
+					</li>
+					
+					<li>
+						<strong>Free Service:</strong> This is a free tool provided as-is. While we try our best, we can't guarantee it will always work perfectly or be available 24/7.
+					</li>
+					
+					<li>
+						<strong>Standard Legal Protection:</strong> Like most websites, we need to protect ourselves from legal issues related to user-generated content. Since users control what gets shared, any legal responsibility stays with the person sharing the content, not with us.
 					</li>
 				</ol>
+				
+				<p><em>These are standard terms to help us provide this free service safely. By continuing, you're agreeing to these simple rules.</em></p>
 				
 				<div class="attribution">
 					<p>This is a free service brought to you by <a href="https://ishafayet.me" target="_blank" rel="noopener noreferrer">Sayem Shafayet</a>, a FOSS enthusiast.</p>
