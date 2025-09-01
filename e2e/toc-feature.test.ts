@@ -19,10 +19,10 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		await expect(page.locator('#toc-title')).toHaveText('Terms and Conditions');
 		
 		// Check TOC content
-		await expect(page.locator('.simple-content')).toContainText('By continuing to use this app, you agree to the following Terms and Conditions:');
-		await expect(page.locator('.simple-content')).toContainText('No Data Storage');
-		await expect(page.locator('.simple-content')).toContainText('No Developer Responsibility');
-		await expect(page.locator('.simple-content')).toContainText('No Platform Indexing');
+		await expect(page.locator('.simple-content')).toContainText("Welcome! Here's everything you need to know");
+		await expect(page.locator('.simple-content')).toContainText('Your Privacy is Protected');
+		await expect(page.locator('.simple-content')).toContainText("We Can't See Your Content");
+		await expect(page.locator('.simple-content')).toContainText('No Search Indexing');
 		await expect(page.locator('.attribution')).toContainText('Sayem Shafayet');
 		await expect(page.locator('.attribution a')).toHaveAttribute('href', 'https://ishafayet.me');
 	});
@@ -60,44 +60,28 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		await expect(page.locator('.popup-backdrop')).not.toBeVisible();
 	});
 
-	test('should close TOC popup when clicking close button', async ({ page }) => {
-		// Create and navigate to test content
-		await page.goto('/');
-		await page.locator('#markdown-input').fill('# TOC Close Button Test');
-		await page.locator('.generate-btn').click();
-		
-		const linkInput = page.locator('.link-input');
-		const linkValue = await linkInput.inputValue();
-		await page.goto(linkValue);
-		
-		// TOC popup should be visible
-		await expect(page.locator('.popup-backdrop')).toBeVisible();
-		
-		// Click close button
-		await page.locator('.close-btn').click();
-		
-		// Popup should close
-		await expect(page.locator('.popup-backdrop')).not.toBeVisible();
-	});
+
 
 	test('should close TOC popup when clicking backdrop', async ({ page }) => {
 		// Create and navigate to test content
 		await page.goto('/');
 		await page.locator('#markdown-input').fill('# TOC Backdrop Test');
 		await page.locator('.generate-btn').click();
-		
+
 		const linkInput = page.locator('.link-input');
 		const linkValue = await linkInput.inputValue();
 		await page.goto(linkValue);
-		
+
 		// TOC popup should be visible
 		await expect(page.locator('.popup-backdrop')).toBeVisible();
-		
+
 		// Click on backdrop (not on content)
 		await page.locator('.popup-backdrop').click({ position: { x: 10, y: 10 } });
-		
-		// Popup should close
-		await expect(page.locator('.popup-backdrop')).not.toBeVisible();
+
+		// Popup should remain visible (persistent)
+		await expect(page.locator('.popup-backdrop')).toBeVisible();
+		// Close via "I Understand" to end test cleanly
+		await page.locator('.got-it-btn').click();
 	});
 
 	test('should close TOC popup when pressing Escape key', async ({ page }) => {
@@ -105,19 +89,21 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		await page.goto('/');
 		await page.locator('#markdown-input').fill('# TOC Escape Key Test');
 		await page.locator('.generate-btn').click();
-		
+
 		const linkInput = page.locator('.link-input');
 		const linkValue = await linkInput.inputValue();
 		await page.goto(linkValue);
-		
+
 		// TOC popup should be visible
 		await expect(page.locator('.popup-backdrop')).toBeVisible();
-		
+
 		// Press Escape key
 		await page.keyboard.press('Escape');
-		
-		// Popup should close
-		await expect(page.locator('.popup-backdrop')).not.toBeVisible();
+
+		// Popup should remain visible (persistent)
+		await expect(page.locator('.popup-backdrop')).toBeVisible();
+		// Close via "I Understand" to end test cleanly
+		await page.locator('.got-it-btn').click();
 	});
 
 	test('should not close TOC popup when clicking on popup content', async ({ page }) => {
@@ -136,7 +122,7 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		// Click on popup content (not backdrop)
 		await page.locator('.popup-content').click();
 		
-		// Popup should still be visible
+		// Popup should remain visible (persistent)
 		await expect(page.locator('.popup-backdrop')).toBeVisible();
 	});
 
@@ -187,11 +173,11 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		await page.goto('/');
 		await page.locator('#markdown-input').fill('# TOC Multiple Opens Test');
 		await page.locator('.generate-btn').click();
-		
+
 		const linkInput = page.locator('.link-input');
 		const linkValue = await linkInput.inputValue();
 		await page.goto(linkValue);
-		
+
 		// Close initial TOC popup if it appears
 		await page.waitForLoadState('networkidle');
 		const tocPopup = page.locator('.popup-backdrop');
@@ -199,12 +185,12 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 			await page.locator('.got-it-btn').click();
 			await page.waitForTimeout(500); // Wait for popup to close
 		}
-		
+
 		// Open TOC popup multiple times
 		for (let i = 0; i < 3; i++) {
 			await page.locator('.content-header .btn-secondary').first().click();
 			await expect(page.locator('.popup-backdrop')).toBeVisible();
-			await page.locator('.close-btn').click();
+			await page.locator('.got-it-btn').click();
 			await expect(page.locator('.popup-backdrop')).not.toBeVisible();
 		}
 	});
@@ -249,7 +235,6 @@ test.describe('Terms and Conditions (TOC) Feature', () => {
 		await expect(page.locator('.popup-backdrop')).toHaveAttribute('role', 'dialog');
 		await expect(page.locator('.popup-backdrop')).toHaveAttribute('aria-modal', 'true');
 		await expect(page.locator('.popup-backdrop')).toHaveAttribute('aria-labelledby', 'toc-title');
-		await expect(page.locator('.close-btn')).toHaveAttribute('aria-label', 'Close popup');
 		await expect(page.locator('.got-it-btn')).toHaveAttribute('type', 'button');
 	});
 

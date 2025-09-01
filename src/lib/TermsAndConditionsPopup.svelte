@@ -26,7 +26,8 @@
 	
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape') {
-			closePopup();
+			event.preventDefault();
+			event.stopPropagation();
 		}
 	}
 
@@ -41,7 +42,12 @@
 
 <div 
 	class="popup-backdrop" 
-	on:click={(event) => event.target === event.currentTarget && closePopup()}
+	on:click={(event) => {
+		if (event.target === event.currentTarget) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+	}}
 	on:keydown={handleKeydown}
 	role="dialog"
 	aria-modal="true"
@@ -52,12 +58,6 @@
 	<div class="popup-content">
 		<div class="popup-header">
 			<h2 id="toc-title">Terms and Conditions</h2>
-			<button 
-				class="close-btn" 
-				on:click={closePopup}
-				aria-label="Close popup"
-				type="button"
-			>&times;</button>
 		</div>
 		
 		<div class="popup-body">
@@ -158,26 +158,7 @@
 		font-weight: 600;
 	}
 	
-	.close-btn {
-		background: none;
-		border: none;
-		font-size: 2rem;
-		color: #7f8c8d;
-		cursor: pointer;
-		padding: 0;
-		width: 32px;
-		height: 32px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 50%;
-		transition: all 0.2s ease;
-	}
-	
-	.close-btn:hover {
-		background: #f8f9fa;
-		color: #2c3e50;
-	}
+
 	
 	.popup-body {
 		padding: 1.5rem 2rem;
@@ -324,11 +305,7 @@
 			font-size: 1.25rem;
 		}
 
-		.close-btn {
-			width: 28px;
-			height: 28px;
-			font-size: 1.5rem;
-		}
+
 
 		.popup-body {
 			padding: 1rem 1.25rem;
